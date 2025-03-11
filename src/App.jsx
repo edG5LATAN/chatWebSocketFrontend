@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { Client } from "@stomp/stompjs";
 import "./App.css";
-import { listaColores } from "./components/colores/Informacion";
-
+import { listaColores } from "./components/colores/Informacion"; 
 function App() {
   const [stompCliente, setStompCliente] = useState(null);
   const [mensajes, setmensajes] = useState([]);
   const [nombre, setnombre] = useState("");
   const [mensaje, setmensaje] = useState("");
+  const [coloresUsuarios, setColoresUsuarios] = useState({});
 
   useEffect(() => {
     setmensaje("");
@@ -39,24 +39,44 @@ function App() {
         body: JSON.stringify({
           nombre: nombre,
           contenido: mensaje,
-          color: color
+          color: color,
         }),
       });
       setmensaje("");
     }
   };
 
-  // Función para obtener un color aleatorio basado en el nombre
   const getColorByName = (nombre) => {
-    const listaC = listaColores;
-    const index = nombre.length % listaC.length; // Puedes usar un cálculo diferente si prefieres
-    return listaC[index];
+    if (coloresUsuarios[nombre]) {
+      return coloresUsuarios[nombre];
+    }
+
+    const color = generateColorFromName(nombre);
+
+    setColoresUsuarios((prev) => ({
+      ...prev,
+      [nombre]: color,
+    }));
+
+    return color;
+  };
+
+  const generateColorFromName = (name) => {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    const index = Math.abs(hash) % listaColores.length; 
+    return listaColores[index]; 
   };
 
   return (
-    <main className="contenedor_mjs pt-5" >
+    <main className="contenedor_mjs pt-5">
       <div className="border p-3 rounded-3 contenedor_msj_chat">
-        <h3 className="text-center pt-1 pb-4 text-uppercase">proyecto con <strong>web socket</strong></h3>
+        <h3 className="text-center pt-1 pb-4 text-uppercase">
+          Proyecto con <strong>Web Socket</strong>
+        </h3>
         <article className="row">
           <section className="col">
             <section className="form-floating">
