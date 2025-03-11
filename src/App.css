@@ -1,0 +1,18 @@
+.contenedor_mjs{
+  background-image: url("../public/fondoChat.webp");
+  background-repeat: repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.contenedor_msj_chat{
+  background-color: rgba(141, 69, 201, 0.74);
+  box-shadow: 2px 2px 2px 4px;
+}
+.contenedor_msj{
+  min-height: 300px;
+  max-height: 500px;
+  overflow-y: scroll;
+  background-color: rgba(221, 230, 209, 0.514);
+}
